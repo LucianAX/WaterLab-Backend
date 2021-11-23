@@ -16,7 +16,7 @@ db.serialize(() => {
         CREATE TABLE Measurements (
             id INTEGER PRIMARY KEY NOT NULL,
             timestamp TEXT NOT NULL,
-            ph_value TEXT NOT NULL,
+            ph_value REAL NOT NULL,
             temperature_celsius REAL NOT NULL,
             electric_conductivity REAL NOT NULL
         );`,
