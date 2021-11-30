@@ -19,4 +19,5 @@ let minutes = checkForSingleDigit(today.getMinutes());
 let seconds = checkForSingleDigit(today.getSeconds());
 
 const timestamp = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+
 module.exports = timestamp;

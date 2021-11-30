@@ -2,28 +2,30 @@ const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('./waterlab_database.sqlite');
 
 db.serialize(() => {
-    db.run('DROP TABLE IF EXISTS Measurements',
+    db.run('DROP TABLE IF EXISTS Measurement',
         (err) => err ? console.log(err) : 1
     );
-    db.run('DROP TABLE IF EXISTS StationaryUnits',
+    db.run('DROP TABLE IF EXISTS StationaryUnit',
         (err) => err ? console.log(err) : 1
     );
-    db.run('DROP TABLE IF EXISTS MeasurementWarnings',
+    db.run('DROP TABLE IF EXISTS MeasurementWarning',
         (err) => err ? console.log(err) : 1
     );
 
     db.run(`
-        CREATE TABLE Measurements (
+        CREATE TABLE Measurement (
             id INTEGER PRIMARY KEY NOT NULL,
             timestamp TEXT NOT NULL,
             ph_value REAL NOT NULL,
             temperature_celsius REAL NOT NULL,
-            electric_conductivity REAL NOT NULL
+            electric_conductivity REAL NOT NULL,
+            stationary_unit_id INTEGER NOT NULL,
+            FOREIGN KEY (stationary_unit_id) REFERENCES StationaryUnit (id)
         );`,
         (err) => err ? console.log(err) : 1
     );
     db.run(`
-        CREATE TABLE StationaryUnits (
+        CREATE TABLE StationaryUnit (
             id INTEGER PRIMARY KEY NOT NULL,
             unit_name TEXT NOT NULL,
             interval_execute_measurement INTEGER NOT NULL,
@@ -37,7 +39,7 @@ db.serialize(() => {
         (err) => err ? console.log(err) : 1
     );
     db.run(`
-        CREATE TABLE MeasurementWarnings (
+        CREATE TABLE MeasurementWarning (
             id INTEGER PRIMARY KEY NOT NULL,
             stationary_unit_id INTEGER NOT NULL,
             measurement_id INTEGER NOT NULL,
@@ -46,8 +48,8 @@ db.serialize(() => {
             temp_celsius_value REAL NOT NULL,
             ec_value REAL NOT NULL,
             values_with_warnings TEXT NOT NULL,
-            FOREIGN KEY (stationary_unit_id) REFERENCES StationaryUnits (id),
-            FOREIGN KEY (measurement_id) REFERENCES Measurements (id)
+            FOREIGN KEY (stationary_unit_id) REFERENCES StationaryUnit (id),
+            FOREIGN KEY (measurement_id) REFERENCES Measurement (id)
         );`,
         (err) => err ? console.log(err) : 1
     );

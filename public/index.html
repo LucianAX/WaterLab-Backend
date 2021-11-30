@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>WaterLab Web Application</title>
         <link rel="stylesheet" type="text/css" href="./css/reset.css">
-        <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <link rel="stylesheet" type="text/css" href="./css/styles.css">
+
     </head>
     <body>
         <header>
@@ -18,28 +19,17 @@
         <main>
             <h2>MEASUREMENTS</h2>
             <table>
-                <tr>
-                    <th>ID</th>
-                    <th>TIMESTAMP</th>
-                    <th>pH VALUE</th>
-                    <th>TEMPERATURE (°C)</th>
-                    <th>ELECTRIC CONDUCTIVITY (S/m)</th>
-                </tr>
-                <tr>
-                    <td>Mock 1</td>
-                    <td>Mock date 1</td>
-                    <td>Mock 7.5</td>
-                    <td>Mock 17</td>
-                    <td>Mock 0.025</td>
-                </tr>
-                <tr>
-                    <td>Mock 2</td>
-                    <td>Mock date 2</td>
-                    <td>Mock 6.5</td>
-                    <td>Mock 15.4</td>
-                    <td>Mock 0.032</td>
-                </tr>
+                <tbody id="measurements-table-body">
+                    <tr>
+                        <th>ID</th>
+                        <th>TIMESTAMP</th>
+                        <th>pH VALUE</th>
+                        <th>TEMPERATURE (°C)</th>
+                        <th>ELECTRIC CONDUCTIVITY (S/m)</th>
+                    </tr>
+                </tbody>
             </table>
         </main>
+        <script src='../utils/render_measurements.js'></script>
     </body>
 </html>
