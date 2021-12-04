@@ -1,13 +1,10 @@
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('./waterlab_database.sqlite');
 
-const timestamp = require('./create_timestamp.js');
+const getTimestamp = require('./create_timestamp.js');
+const getRandomRealNumber = require('./create_random_real_number.js');
 
-// Returns a random number between min (included) and max (not included) with the desired no. of floating decimals
-const getRandomRealNumber = (min, max, desiredDecimals) => {
-    let longDigitsVal = Math.random() * (max - min) + min;
-    return Number(longDigitsVal.toFixed(desiredDecimals));
-}
+const timestamp = getTimestamp();
 
 //Get a random ph value between 6 and 7
 const phValue = getRandomRealNumber(6, 8, 1);

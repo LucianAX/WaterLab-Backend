@@ -7,7 +7,8 @@ const measurementsRouter = express.Router();
 measurementsRouter.get('/', (req, res, next) => {
     db.all(`
         SELECT *
-        FROM Measurement;
+        FROM Measurement
+        ORDER BY timestamp DESC;
         `, (err, allMeasurements) => {
             err
                 ? next(err)

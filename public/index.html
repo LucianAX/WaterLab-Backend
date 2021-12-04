@@ -13,7 +13,7 @@
             <h1>WaterLab Stationary Unit</h1>
         </header>
         <aside class="request-measurement">
-            <button>Request measurement</button>
+            <button id="request-measurement-button">Request measurement</button>
             <p>Measurement received! Check latest entry in list!</p>
         </aside>
         <main>
@@ -30,6 +30,8 @@
                 </tbody>
             </table>
         </main>
-        <script src='../utils/render_measurements.js'></script>
+        <script src='../scripts/frontend-located/post_measurement.js'></script>
+        <script type="module" src='../scripts/frontend-located/request_measurement.js'></script>
+        <script src='../scripts/frontend-located/render_measurements.js'></script>
     </body>
 </html>
