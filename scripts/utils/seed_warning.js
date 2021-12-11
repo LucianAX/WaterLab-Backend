@@ -1,29 +1,8 @@
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('waterlab_database.sqlite');
 
-const getTimestamp = require('./create_timestamp.js');
-const getRandomRealNumber = require('./create_random_real_number.js');
-
-
-const stationaryUnitID = 1;
-const measurementID = 2;
-
-
-const timestamp = getTimestamp();
-
-//Get a random ph value between 6 and 7
-const phValue = getRandomRealNumber(6, 8, 1);
-
-//Get a random Celsius temperature between 12 and 19
-const tempCelsius = getRandomRealNumber(12, 20, 2);
-
-//Get a random EC value between 0.005 and 0.05
-const elecCond = getRandomRealNumber(0.005, 0.051, 3);
-
-const valuesWithWarnings = ['temperature_celsius', 'electric_conductivity'].toString();
-// console.log(typeof)
-
-const seedWarning = () => {
+/**** helper function for inserting values into Warning table  ****/
+const insertWarning = (mm) => {
     db.run(`
         INSERT INTO Warning (
             stationary_unit_id, measurement_id, timestamp,
@@ -32,16 +11,16 @@ const seedWarning = () => {
         )
         VALUES (
             $stationaryUnitID, $measurementID, $timestamp,
-            $phValue, $tempCelsius, $elecCond,
+            $phValue, $tempC, $elecCond,
             $valuesWithWarnings
         )`,
         {
             $stationaryUnitID: stationaryUnitID,
             $measurementID: measurementID,
-            $timestamp: timestamp,
-            $phValue: phValue,
-            $tempCelsius: tempCelsius,
-            $elecCond: elecCond,
+            $timestamp: mm.timestamp,
+            $phValue: mm.phValue,
+            $tempC: mm.tempC,
+            $elecCond: mm.elecCond,
             $valuesWithWarnings: valuesWithWarnings
         }, 
         function(err) {
@@ -58,6 +37,58 @@ const seedWarning = () => {
                         : console.log(newWarning);
                 }
             );          
+        }
+    );
+}
+
+
+
+/*** Picking random measurement, retrieving fields and randomly creating the values with warnings field */
+
+const getRandomWarningsArray = require('./get_random_warnings_array.js');
+
+const stationaryUnitID = 1;
+let measurementID;
+let timestamp, phValue, tempC, elecCond;
+
+const valuesArray = ['ph_value', 'temperature_celsius', 'electric_conductivity'];
+const valuesWithWarnings = getRandomWarningsArray(valuesArray).toString();
+console.log(valuesWithWarnings);
+
+const seedWarning = () => {
+    db.all(`
+        SELECT *
+        FROM Measurement;
+        `, (err, allMeasurements) => {
+            if (err) {
+                return console.log(err);
+            }
+
+            // pick random measurement ID
+            nrOfMeasurements = allMeasurements.length;
+            measurementID = Math.floor(Math.random() * nrOfMeasurements) + 1;
+            console.log(measurementID);
+
+            db.get(`
+                SELECT *
+                FROM Measurement
+                WHERE id = ${measurementID};
+                `, (err, foundMeas) => {
+                    if (err) {
+                        return console.log(err);
+                    }
+
+                    //transfer values of fields from picked measurement
+                    const mmObj = {
+                        timestamp: foundMeas.timestamp,
+                        phValue: foundMeas.ph_value,
+                        tempC: foundMeas.temperature_celsius,
+                        elecCond: foundMeas.electric_conductivity,
+                    } 
+                    
+                    insertWarning(mmObj);
+                }
+            );
         }
     );
 }
