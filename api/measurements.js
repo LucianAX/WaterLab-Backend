@@ -12,7 +12,6 @@ measurementsRouter.get('/', (req, res, next) => {
         `, (err, allMeasurements) => {
             err
                 ? next(err)
-                // ? console.log('bau bau')
                 : res.status(200).send({ measurements: allMeasurements });
         }
     );

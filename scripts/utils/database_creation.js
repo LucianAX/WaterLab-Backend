@@ -8,7 +8,7 @@ db.serialize(() => {
     db.run('DROP TABLE IF EXISTS StationaryUnit',
         (err) => err ? console.log(err) : 1
     );
-    db.run('DROP TABLE IF EXISTS MeasurementWarning',
+    db.run('DROP TABLE IF EXISTS Warning',
         (err) => err ? console.log(err) : 1
     );
 
@@ -39,14 +39,14 @@ db.serialize(() => {
         (err) => err ? console.log(err) : 1
     );
     db.run(`
-        CREATE TABLE MeasurementWarning (
+        CREATE TABLE Warning (
             id INTEGER PRIMARY KEY NOT NULL,
             stationary_unit_id INTEGER NOT NULL,
             measurement_id INTEGER NOT NULL,
             timestamp TEXT NOT NULL,
             ph_value REAL NOT NULL,
-            temp_celsius_value REAL NOT NULL,
-            ec_value REAL NOT NULL,
+            temperature_celsius REAL NOT NULL,
+            electric_conductivity REAL NOT NULL,
             values_with_warnings TEXT NOT NULL,
             FOREIGN KEY (stationary_unit_id) REFERENCES StationaryUnit (id),
             FOREIGN KEY (measurement_id) REFERENCES Measurement (id)
