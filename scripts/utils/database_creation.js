@@ -20,6 +20,7 @@ db.serialize(() => {
             temperature_celsius REAL NOT NULL,
             electric_conductivity REAL NOT NULL,
             stationary_unit_id INTEGER NOT NULL,
+            has_warning TEXT DEFAULT 'false',
             FOREIGN KEY (stationary_unit_id) REFERENCES StationaryUnit (id)
         );`,
         (err) => err ? console.log(err) : 1

@@ -1,8 +1,8 @@
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('./waterlab_database.sqlite');
 
-const getTimestamp = require('./create_timestamp.js');
-const getRandomRealNumber = require('./create_random_real_number.js');
+const getTimestamp = require('./get_timestamp.js');
+const getRandomRealNumber = require('./get_random_real_number.js');
 
 const timestamp = getTimestamp();
 
@@ -15,19 +15,22 @@ const temperatureCelsius = getRandomRealNumber(12, 20, 2);
 //Get a random EC value between 0.005 and 0.05
 const electricConductivity = getRandomRealNumber(0.005, 0.051, 3);
 
+// let hasWarning = 'true';
+let hasWarning = 'false';
 
 db.run(`
     INSERT INTO Measurement
-        (timestamp, ph_value, temperature_celsius, electric_conductivity, stationary_unit_id)
+        (timestamp, ph_value, temperature_celsius, electric_conductivity, stationary_unit_id, has_warning)
     VALUES
-        ($timestamp, $phValue, $tempC, $elecCond, $stationaryUnitID);
+        ($timestamp, $phValue, $tempC, $elecCond, $stationaryUnitID, $hasWarning);
     `,
     {
         $timestamp: timestamp,
         $phValue: phValue,
         $tempC: temperatureCelsius,
         $elecCond: electricConductivity,
-        $stationaryUnitID: 1
+        $stationaryUnitID: 1,
+        $hasWarning: hasWarning
     },
     function(err) {
         if (err) {

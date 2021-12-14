@@ -23,6 +23,7 @@ measurementsRouter.post('/', (req, res, next) => {
     const tempC = req.body.measurement.tempC;
     const elecCond = req.body.measurement.elecCond;
     const stationaryUnitID = req.body.measurement.stationaryUnitID;
+    const hasWarning = req.body.measurement.hasWarning;
 
     if (!timestamp || !phValue || !tempC || !elecCond || !stationaryUnitID) {
         return res.status(400).send('At least one of the required fields is missing!');
@@ -30,16 +31,17 @@ measurementsRouter.post('/', (req, res, next) => {
 
     db.run(`
         INSERT INTO Measurement
-            (timestamp, ph_value, temperature_celsius, electric_conductivity, stationary_unit_id)
+            (timestamp, ph_value, temperature_celsius, electric_conductivity, stationary_unit_id, has_warning)
         VALUES
-            ($timestamp, $phValue, $tempC, $elecCond, $stationaryUnitID);
+            ($timestamp, $phValue, $tempC, $elecCond, $stationaryUnitID, $hasWarning);
         `,
         {
             $timestamp: timestamp,
             $phValue: phValue,
             $tempC: tempC,
             $elecCond: elecCond,
-            $stationaryUnitID: stationaryUnitID
+            $stationaryUnitID: stationaryUnitID,
+            $hasWarning: hasWarning
         },
         function(err) {
             if (err) {
