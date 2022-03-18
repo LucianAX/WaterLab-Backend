@@ -6,13 +6,13 @@ const getRandomRealNumber = require('./get_random_real_number.js');
 
 const timestamp = getTimestamp();
 
-//Get a random ph value between 6 and 7
+// Get a random ph value between 6 and 7
 const phValue = getRandomRealNumber(6, 8, 1);
 
-//Get a random Celsius temperature between 12 and 19
+// Get a random Celsius temperature between 12 and 19
 const temperatureCelsius = getRandomRealNumber(12, 20, 2);
 
-//Get a random EC value between 0.005 and 0.05
+// Get a random EC value between 0.005 and 0.05
 const electricConductivity = getRandomRealNumber(0.005, 0.051, 3);
 
 // let hasWarning = 'true';

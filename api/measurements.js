@@ -8,7 +8,7 @@ measurementsRouter.get('/', (req, res, next) => {
     db.all(`
         SELECT *
         FROM Measurement
-        ORDER BY timestamp DESC;
+        ORDER BY id DESC;
         `, (err, allMeasurements) => {
             err
                 ? next(err)

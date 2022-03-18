@@ -2,16 +2,30 @@ const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('./waterlab_database.sqlite');
 
 db.serialize(() => {
-    db.run('DROP TABLE IF EXISTS Measurement',
+    db.run('DROP TABLE IF EXISTS StationaryUnit',
         (err) => err ? console.log(err) : 1
     );
-    db.run('DROP TABLE IF EXISTS StationaryUnit',
+    db.run('DROP TABLE IF EXISTS Measurement',
         (err) => err ? console.log(err) : 1
     );
     db.run('DROP TABLE IF EXISTS Warning',
         (err) => err ? console.log(err) : 1
     );
-
+    
+    db.run(`
+        CREATE TABLE StationaryUnit (
+            id INTEGER PRIMARY KEY NOT NULL,
+            unit_name TEXT NOT NULL,
+            interval_execute_measurement INTEGER NOT NULL,
+            limit_ph_minimum REAL NOT NULL,
+            limit_ph_maximum REAL NOT NULL,
+            limit_temp_minimum REAL NOT NULL,
+            limit_temp_maximum REAL NOT NULL,
+            limit_ec_minimum REAL NOT NULL,
+            limit_ec_maximum REAL NOT NULL
+        );`,
+        (err) => err ? console.log(err) : 1
+    );
     db.run(`
         CREATE TABLE Measurement (
             id INTEGER PRIMARY KEY NOT NULL,
@@ -22,20 +36,6 @@ db.serialize(() => {
             stationary_unit_id INTEGER NOT NULL,
             has_warning TEXT DEFAULT 'false',
             FOREIGN KEY (stationary_unit_id) REFERENCES StationaryUnit (id)
-        );`,
-        (err) => err ? console.log(err) : 1
-    );
-    db.run(`
-        CREATE TABLE StationaryUnit (
-            id INTEGER PRIMARY KEY NOT NULL,
-            unit_name TEXT NOT NULL,
-            interval_execute_measurement INTEGER NOT NULL,
-            warning_ph_minimum REAL NOT NULL,
-            warning_ph_maximum REAL NOT NULL,
-            warning_temp_minimum REAL NOT NULL,
-            warning_temp_maximum REAL NOT NULL,
-            warning_ec_minimum REAL NOT NULL,
-            warning_ec_maximum REAL NOT NULL
         );`,
         (err) => err ? console.log(err) : 1
     );
