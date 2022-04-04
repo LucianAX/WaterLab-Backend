@@ -17,7 +17,7 @@ db.serialize(() => {
             id INTEGER PRIMARY KEY NOT NULL,
             unit_name TEXT NOT NULL,
             interval_execute_measurement INTEGER NOT NULL,
-            is_timer_active TEXT DEFAULT 'false',
+            is_timer_active INTEGER DEFAULT 0,
             limit_ph_minimum REAL NOT NULL,
             limit_ph_maximum REAL NOT NULL,
             limit_temp_minimum REAL NOT NULL,
