@@ -17,7 +17,7 @@ stationaryUnitRouter.get('/:id', (req, res, next) => {
                 next(err);
             }
             if (!stationaryUnit) {
-                res.status(403).send('No stationary unit found!');                
+                res.status(403).send('No stationary unit found at specified ID!');                
             } else  {
                 res.status(200).send({ stationaryUnit: stationaryUnit });
             }
@@ -27,11 +27,10 @@ stationaryUnitRouter.get('/:id', (req, res, next) => {
 
 stationaryUnitRouter.put('/:id', (req, res, next) => {
     const ID = req.params.id;
-    let newMeasurementInterval, newTimerStatus;
     let query, values;
 
-    if (req.body.measurementInterval !== undefined) {
-        newMeasurementInterval = req.body.measurementInterval;
+    if (req.body.measurementInterval) {
+        let newMeasurementInterval = req.body.measurementInterval;
         query = `
             UPDATE StationaryUnit
             SET interval_execute_measurement = $newInterval
@@ -41,8 +40,8 @@ stationaryUnitRouter.put('/:id', (req, res, next) => {
             $ID: ID,
             $newInterval: newMeasurementInterval
         };
-    } else if (req.body.isTimerActive !== undefined) {
-        newTimerStatus = req.body.isTimerActive ? 1 : 0;
+    } else if (req.body.isTimerActive) {
+        let newTimerStatus = req.body.isTimerActive ? 1 : 0;
         query = `
             UPDATE StationaryUnit
             SET is_timer_active = $newTimerStatus
@@ -52,8 +51,21 @@ stationaryUnitRouter.put('/:id', (req, res, next) => {
             $ID: ID,
             $newTimerStatus: newTimerStatus
         };
+    } else if (req.body.limitType) {
+        const limitType = req.body.limitType;
+        const limitValue = Number(req.body.limitValue);
+
+        query = `
+            UPDATE StationaryUnit
+            SET ${limitType} = $limitValue
+            WHERE id = $ID;
+        `;
+        values = {
+            $ID: ID,
+            $limitValue: limitValue
+        };
     } else {
-        res.status(400).send('Bad request!');
+        res.status(400).send('Bad request! No body data matches!');
     }
 
     db.run(query, values, 
@@ -67,7 +79,6 @@ stationaryUnitRouter.put('/:id', (req, res, next) => {
                 WHERE id = $ID;
                 `, { $ID: ID },
                 (err, updatedStationaryUnit) => {
-                    console.log(updatedStationaryUnit.is_timer_active)
                     err
                         ? next(err)
                         : res.status(200).send({ updatedStationaryUnit: updatedStationaryUnit });
