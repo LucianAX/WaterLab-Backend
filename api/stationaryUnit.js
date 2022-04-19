@@ -40,7 +40,8 @@ stationaryUnitRouter.put('/:id', (req, res, next) => {
             $ID: ID,
             $newInterval: newMeasurementInterval
         };
-    } else if (req.body.isTimerActive) {
+    } else if (req.body.isTimerActive !== undefined) {
+        console.log(`Timer statys: ${req.body.isTimerActive}`)
         let newTimerStatus = req.body.isTimerActive ? 1 : 0;
         query = `
             UPDATE StationaryUnit
