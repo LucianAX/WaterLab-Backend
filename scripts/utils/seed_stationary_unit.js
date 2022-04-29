@@ -17,14 +17,14 @@ db.run(`
     `,
     {
         $unitName: 'WaterLab PoC',
-        $intervalExecMeas: 12,
+        $intervalExecMeas: 72,
         $isTimerActive: 0,
-        $limitPhMin: 6.0,
-        $limitPhMax: 7.0,
-        $limitTempMin: 12.0,
-        $limitTempMax: 20.0,
+        $limitPhMin: 6.3,
+        $limitPhMax: 7.5,
+        $limitTempMin: 9.5,
+        $limitTempMax: 13.7,
         $limitEcMin: 0.005,
-        $limitEcMax: 0.051
+        $limitEcMax: 0.05
     },
     function(err) {
         if (err) {

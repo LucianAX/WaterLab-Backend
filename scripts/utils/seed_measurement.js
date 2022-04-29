@@ -18,6 +18,11 @@ const electricConductivity = getRandomRealNumber(0.004, 0.07, 3);
 // let hasWarning = 'true';
 let hasWarning = 'false';
 
+// let phValue = 10;
+// let temperatureCelsius = 7.2;
+// let electricConductivity = 0.3;
+
+
 db.run(`
     INSERT INTO Measurement
         (timestamp, ph_value, temperature_celsius, electric_conductivity, stationary_unit_id, has_warning)

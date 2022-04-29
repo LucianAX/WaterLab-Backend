@@ -41,19 +41,15 @@ const insertWarning = (mm) => {
     );
 }
 
-
-
 /*** Picking random measurement, retrieving fields and randomly creating the values with warnings field */
 
 const getRandomWarningsArray = require('./get_random_warnings_array.js');
 
 const stationaryUnitID = 1;
 let measurementID;
-let timestamp, phValue, tempC, elecCond;
 
 const valuesArray = ['ph_value', 'temperature_celsius', 'electric_conductivity'];
 const valuesWithWarnings = getRandomWarningsArray(valuesArray).toString();
-console.log(valuesWithWarnings);
 
 const seedWarning = () => {
     db.all(`
@@ -67,7 +63,6 @@ const seedWarning = () => {
             // pick random measurement ID
             nrOfMeasurements = allMeasurements.length;
             measurementID = Math.floor(Math.random() * nrOfMeasurements) + 1;
-            console.log(measurementID);
 
             db.get(`
                 SELECT *
